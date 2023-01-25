@@ -11,10 +11,10 @@ RUN \
     rm /etc/ssh/ssh_host_*
 
 RUN adduser --system tunnel && \
-    install -o tunnel -g nogroup -d ~tunnel/.ssh && \
     mkdir /run/sshd
 
-COPY sshd_config /etc/ssh/sshd_config.d/00base
+COPY sshd_config /etc/ssh/sshd_config.d/00base.conf
 COPY entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
+HEALTHCHECK --start-period=1s --interval=1s --timeout=1s CMD test -s /run/sshd.pid

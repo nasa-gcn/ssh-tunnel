@@ -1,0 +1,20 @@
+services:
+  client:
+    build: test/client
+    environment:
+      - SSH_ID_RSA
+      - SSH_ID_RSA_PUB
+      - SSH_CA_PUB
+    depends_on:
+      destination:
+        condition: service_started
+      server:
+        condition: service_healthy
+  destination:
+    build: test/destination
+  server:
+    build: server
+    environment:
+      - SSH_CA
+      - SSH_AUTHORIZED_KEYS
+      - SSH_PERMIT_OPEN="destination:9091"
