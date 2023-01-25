@@ -1,0 +1,5 @@
+AllowAgentForwarding no
+AllowStreamLocalForwarding no
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+PermitTTY no
