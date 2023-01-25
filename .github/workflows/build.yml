@@ -12,7 +12,5 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
+      - name: Run tests
+        run: ./test.sh
