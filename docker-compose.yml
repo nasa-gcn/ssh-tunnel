@@ -1,3 +1,5 @@
+# Example docker-compose file for tests
+
 services:
   client:
     build: test/client
