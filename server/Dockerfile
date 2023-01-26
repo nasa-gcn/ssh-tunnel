@@ -8,9 +8,10 @@ RUN \
     apt-get -y install --no-install-recommends openssh-server && \
     rm -rf /var/lib/apt/lists/* && \
     # Nuke SSH host keys so that we regenerate them at container run time
-    rm /etc/ssh/ssh_host_*
-
-RUN adduser --system tunnel && \
+    rm /etc/ssh/ssh_host_* && \
+    # Create 'tunnel' user
+    adduser --system tunnel && \
+    # Create runtime dir for sshd
     mkdir /run/sshd
 
 COPY sshd_config /etc/ssh/sshd_config.d/00base.conf
