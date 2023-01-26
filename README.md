@@ -13,61 +13,33 @@ variables.
 
 ## Example
 
-Generate an SSH key pair for the client:
+1.  If your client does not already have an SSH public then key pair, generate one by running this command, which will create the files `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`:
 
-```
-$ ssh-keygen 
-Generating public/private rsa key pair.
-Enter file in which to save the key (/home/example/.ssh/id_rsa): 
-Created directory '/home/example/.ssh'.
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
-Your identification has been saved in /home/example/.ssh/id_rsa
-Your public key has been saved in /home/example/.ssh/id_rsa.pub
-The key fingerprint is:
-SHA256:AN4QdwV2AOTj52uLkTJs5ks8gmWXpFA49vosTqdUeEc root@adc0386d8dcf
-The key's randomart image is:
-+---[RSA 3072]----+
-| .. +o+.=+o      |
-|oo . * o .       |
-|o.. oE=          |
-| ..+.o o         |
-| .=oo.. S        |
-| =o+.  +         |
-|.o+.X o .        |
-|o.oO + o..       |
-|.o. o...o.       |
-+----[SHA256]-----+
-```
+        $ ssh-keygen -q -N ""
 
-Generate an SSH keypair for host certificate signing:
+    This command will save th
 
-```
-$ ssh-keygen -f ca
-Generating public/private rsa key pair.
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
-Your identification has been saved in ca
-Your public key has been saved in ca.pub
-The key fingerprint is:
-SHA256:wmDmtLgzlWelB+BbXVvsYROXZfqCNfrwRFESg1ERfMg example@example-host
-The key's randomart image is:
-+---[RSA 3072]----+
-|    .     ..+BXO+|
-|   . . . . o*.E*.|
-|    * o o .o o=. |
-|   * B +    .= o |
-|  . * * S   + o .|
-|   o o o     = . |
-|  +           o  |
-|   o             |
-|                 |
-+----[SHA256]-----+
-```
+2.  Generate an SSH key pair for the host certificate authority by running this command, which will create the files `~/.ssh/ca` and `~/.ssh/ca.pub`:
 
-Install the public key in your own known_hosts file:
+        $ ssh-keygen -q -N "" -f ca
 
-```
-$ echo @cert-authority '*' $(cat ca.pub) >> ~/.ssh/known_hosts
-```
+3.  Install the certificate authority public key in your SSH known hosts file:
 
+        $ echo @cert-authority \* $(cat ca.pub) >> ~/.ssh/known_hosts
+
+4.  Run the container. In this example, we are only going to permit port forwarding to google.com:80. (In this example, we also map port 22 in the container to port 22 on the machine.)
+
+        $ docker run --rm -it -p 127.0.0.1:2022:22/tcp \
+            -e SSH_CA="$(cat ca)" \
+            -e SSH_AUTHORIZED_KEYS="$(cat ~/.ssh/id_rsa.pub)" \
+            -e SSH_PERMIT_OPEN=google.com:80 \
+            ghcr.io/nasa-gcn/ssh-tunnel
+
+5.  Start an SSH connection to the container.
+
+        $ ssh -p 2022 -NL 8080:google.com:80 tunnel@localhost
+
+6.   Connect to google.com:80 through the tunnel.
+
+        $ echo GET / | nc localhost 8080 | head -n 1
+        HTTP/1.0 200 OK
