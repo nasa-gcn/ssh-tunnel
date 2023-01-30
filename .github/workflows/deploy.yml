@@ -49,10 +49,19 @@ jobs:
             type=raw,value=latest,enable=${{ matrix.env == 'dev' }}
             type=raw,value=${{ matrix.env }}-{{ date 'YYYYMMDDThhmmss' }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: server
+          platforms: amd64,arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
