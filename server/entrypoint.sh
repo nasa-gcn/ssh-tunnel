@@ -25,5 +25,8 @@ then
     install -D -o tunnel -g nogroup <(printf "%s\n" "${SSH_AUTHORIZED_KEYS}") ~tunnel/.ssh/authorized_keys
 fi
 
+# Start Prometheus collector
+/sshd-prometheus-exporter.py &
+
 # Start sshd
 /usr/sbin/sshd -De
