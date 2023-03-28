@@ -19,7 +19,7 @@ variables.
 
     This command will save th
 
-2.  Generate an SSH key pair for the host certificate authority by running this command, which will create the files `~/.ssh/ca` and `~/.ssh/ca.pub`:
+2.  Generate an SSH key pair for the host certificate authority by running this command, which will create the files `ca` and `ca.pub`:
 
         $ ssh-keygen -q -N "" -f ca
 
