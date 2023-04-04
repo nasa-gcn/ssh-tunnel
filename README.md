@@ -39,7 +39,7 @@ variables.
 
         $ ssh -p 2022 -NL 8080:google.com:80 tunnel@localhost
 
-6.   Connect to google.com:80 through the tunnel.
+6.  Connect to google.com:80 through the tunnel.
 
         $ echo GET / | nc localhost 8080 | head -n 1
         HTTP/1.0 200 OK
