@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends netcat && \
+    apt-get -y install --no-install-recommends netcat-openbsd && \
     rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /
