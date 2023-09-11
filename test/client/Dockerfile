@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 
 RUN apt-get update && \
-    apt-get -y install --no-install-recommends openssh-client netcat && \
+    apt-get -y install --no-install-recommends openssh-client netcat-openbsd && \
     rm -rf /var/lib/apt/lists/* && \
     adduser --system clientuser
 
