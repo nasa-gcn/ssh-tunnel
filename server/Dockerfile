@@ -14,7 +14,7 @@ RUN \
     # Nuke SSH host keys so that we regenerate them at container run time
     rm /etc/ssh/ssh_host_* && \
     # Create 'tunnel' user
-    adduser --system tunnel && \
+    adduser --system --home /home/tunnel tunnel && \
     # Create runtime dir for sshd
     mkdir /run/sshd
 
