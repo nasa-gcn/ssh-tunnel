@@ -4,8 +4,8 @@ RUN \
     # Turn off password authentication for ssh
     echo openssh-server openssh-server/password-authentication boolean false | debconf-set-selections && \
     # Install openssh-server and Python dependencies for Prometheus collector
-    apt-get update && \
-    apt-get -y install --no-install-recommends \
+    apt update && \
+    apt -y install --no-install-recommends \
         openssh-server \
         python-is-python3 \
         python3-click \
